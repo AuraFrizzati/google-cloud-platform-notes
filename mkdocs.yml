@@ -1,6 +1,6 @@
-site_name: GitHub Pages - Topic
-site_url: https://aurafrizzati.github.io/github-pages-template/
-repo_url: https://github.com/AuraFrizzati/github-pages-template/
+site_name: GitHub Pages - GCP Notes
+site_url: https://aurafrizzati.github.io/google-cloud-platform-notes/
+repo_url: https://github.com/AuraFrizzati/google-cloud-platform-notes/
 docs_dir: doc
 edit_uri: edit/main/doc/
 theme:
