@@ -49,8 +49,18 @@ Key **log categories**:
 
 ## Storing, Routing and Exporting the Logs
 
+Logs can be routed and stored for long-term storage and analysis.
 
+**Cloud Logging** is a **collection of components** exposed through a **centralised logging API**:
 
+![alt text](img/cloud_logging_components.png)
+
+1. **Log Router**: Entries are passed through the API and fed to Log Router. Log Router is **optimized** for processing **streaming data**, reliably buffering it, and sending it to any combination of log storage and sink (export) locations. By default, log entries are fed into one of the default logs storage buckets. **Exclusion filters** might be created to partially or totally prevent this behavior.
+2. **Log Sinks**: Log sinks **run in parallel with the default log flow** and might be used to direct entries to external locations.
+3. **Log Storage**: Locations might include **additional Cloud Logging buckets**, **Cloud Storage**, **BigQuery**, **Pub/Sub**, or **external projects**. **Inclusion** and **exclusion filters** can control exactly which logging entries end up at a particular destination, and which are ignored completely.
+4. **Required Bucket**: holds **Admin Activity audit logs**, **System Event audit logs**, and **Access Transparency logs**, and **retains** them for **400 days**. You **aren't charged** for the logs stored in Required, and the **retention period** of the logs stored here **cannot be modified**. You **cannot delete** or **modify** this bucket.
+5. **Logs Buckets**: For each Google Cloud project, Logging automatically creates two logs buckets, **_Required** and **_Default**, and **corresponding log sinks** with the same names. All logs generated in the project are stored in one of these two locations.
+6. **Default Bucket**: **holds all other ingested logs** in a Google Cloud project, except for the logs held in the Required bucket. [**Standard Cloud Logging pricing**](https://cloud.google.com/stackdriver/pricing#logging-costs) applies to these logs. Log entries held in the Default bucket are **retained for 30 days**, unless you apply [custom retention](https://docs.cloud.google.com/logging/docs/routing/overview#custom-retention) rules. **You can't delete this bucket**, but you can [**disable** the Default](https://docs.cloud.google.com/logging/docs/export/configure_export_v2#disabling_sink) log sink that routes logs to this bucket.
 
 
 
