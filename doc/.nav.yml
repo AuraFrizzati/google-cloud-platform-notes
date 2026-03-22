@@ -7,4 +7,4 @@ nav:
   - BigQuery (BQ):
       - 1.1 BQ Architecture: 1_1_BQ_architecture.md
   - Cloud Logging & Monitoring:
-      - 2.1 Cloud Logging: 2_1_cloud_logging.md
+      - 1 Cloud Logging: 2_1_cloud_logging.md
