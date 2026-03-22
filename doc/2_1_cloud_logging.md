@@ -64,7 +64,7 @@ Logs can be routed and stored for long-term storage and analysis.
 
 
 
-## References:
+## References
 
 - [Cloud Logging overview](https://docs.cloud.google.com/logging/docs/overview)
 - [Cloud Logging overview and architecture](https://www.skills.google/course_templates/99/html_bundles/621228)
