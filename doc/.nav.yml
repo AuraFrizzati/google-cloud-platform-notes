@@ -1,0 +1,8 @@
+append_unmatched: false
+flatten_single_child_sections: false
+nav:
+  - Home: index.md
+  - Introduction:
+      - Intro 1: intro_1.md
+  - Section 1:
+      - subsection 1.1: section_1_1.md
