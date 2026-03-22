@@ -21,7 +21,7 @@ Cloud Logging architecture consists of several components:
 ![alt text](img/cloud_logging_architecture.png)
 
 1. **Log Collections**: These are the places where **log data originates**. **Log sources** can be **Google Cloud services**, such as Compute Engine, App Engine, and Kubernetes Engine, or **your own applications**.
-2. **Log Routing**: The Log Router is responsible for **routing log data to its destination**. The Log Router uses a combination of **inclusion filters** and e**xclusion filters** to determine which log data is routed to each destination.
+2. **Log Routing**: The Log Router is responsible for **routing log data to its destination**. The Log Router uses a combination of **inclusion filters** and **exclusion filters** to determine which log data is routed to each destination.
 3. **Log sinks**: Log sinks are **destinations** where **log data** is **stored**.
 4. **Store Logs**: Cloud Logging supports a **variety of log sinks**, including:
     - **Cloud Logging log buckets**: These are **storage buckets** that are **specifically designed** for **storing log data**.
