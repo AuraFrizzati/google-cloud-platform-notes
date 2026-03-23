@@ -62,6 +62,38 @@ Logs can be routed and stored for long-term storage and analysis.
 5. **Logs Buckets**: For each Google Cloud project, Logging automatically creates two logs buckets, **_Required** and **_Default**, and **corresponding log sinks** with the same names. All logs generated in the project are stored in one of these two locations.
 6. **Default Bucket**: **holds all other ingested logs** in a Google Cloud project, except for the logs held in the Required bucket. [**Standard Cloud Logging pricing**](https://cloud.google.com/stackdriver/pricing#logging-costs) applies to these logs. Log entries held in the Default bucket are **retained for 30 days**, unless you apply [custom retention](https://docs.cloud.google.com/logging/docs/routing/overview#custom-retention) rules. **You can't delete this bucket**, but you can [**disable** the Default](https://docs.cloud.google.com/logging/docs/export/configure_export_v2#disabling_sink) log sink that routes logs to this bucket.
 
+### Logs Storage
+The **Logs Storage page** displays a **summary of statistics** for the **logs** that your **project** is receiving.
+
+You can view the **total usage by resource type** for the **current total volume**. The link opens **Metrics Explorer**, which lets you build charts for any metric collected by your project.
+
+1. **Current total volume**: The amount of logs your project has received since the first date of the current month.
+2. **Previous month volume**: The amount of logs your project received in the last calendar month.
+3. **Projected volume by End Of Month (EOM)**: The estimated amount of logs your project will receive by the end of the current month, based on current usage.
+
+### Log router sinks and sink locations
+
+**Log Router sinks** can be used to forward copies of some or all of your log entries to non-default locations. Use cases include storing logs for extended periods, querying logs with SQL, and access control.
+
+There are **several sink locations**, depending on need:
+
+- **Cloud Logging bucket** works well to help pre-separate log entries into a distinct log storage bucket.
+- **BigQuery dataset** allows the SQL query power of BigQuery to be brought to bear on large and complex log entries.
+- **Cloud Storage bucket** is a simple external Cloud Storage location, perhaps for long-term storage or processing with other systems.
+- **Pub/Sub topic** can export log entries to message handling third-party applications or systems created with code and running somewhere like Dataflow or Cloud Run functions.
+- **Splunk** is used to integrate logs into existing Splunk-based system.
+- The **Other project option** is useful to help control access to a subset of log entries.
+
+### Aggregation levels
+
+A common logging need is **centralized log aggregation** for **auditing**, **retention**, or **non-repudiation purposes**.
+
+**Aggregated sinks** allow for easy exporting of logging entries without a one-to-one setup. The sink destination can be any of the destinations discussed up to now.
+
+There are **three** available **Google Cloud Logging aggregation levels**:
+- **Project-level** log sink: it exports all the logs for a specific project and a log filter that can be specified in the sink definition to include/exclude certain log types
+- **Folder-level** log sink: it aggregates logs on the folder level and can include logs from children resources (subfolders, projects etc)
+- **Organisation-level** log sink: for a global view, this aggregation can include logs from children resources (subfolders, projects)
 
 
 ## References
