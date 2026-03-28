@@ -91,9 +91,31 @@ A common logging need is **centralized log aggregation** for **auditing**, **ret
 **Aggregated sinks** allow for easy exporting of logging entries without a one-to-one setup. The sink destination can be any of the destinations discussed up to now.
 
 There are **three** available **Google Cloud Logging aggregation levels**:
+
 - **Project-level** log sink: it exports all the logs for a specific project and a log filter that can be specified in the sink definition to include/exclude certain log types
 - **Folder-level** log sink: it aggregates logs on the folder level and can include logs from children resources (subfolders, projects etc)
 - **Organisation-level** log sink: for a global view, this aggregation can include logs from children resources (subfolders, projects)
+
+## Field naming
+
+There are a few **naming conventions** that apply to **log entry fields**:
+
+- For **log entry fields** that are part of the [LogEntry](https://docs.cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry) type, the corresponding BigQuery field names are precisely the same as the log entry fields.
+- For any user-supplied fields, the letter case is normalized to lowercase, but the naming is otherwise preserved.
+- For **fields** in **structured payloads**, as long as the @type specifier is not present, the letter case is normalized to **lowercase**, but naming is otherwise preserved. For information on structured payloads where the @type specifier is present, see the [Payload fields with `@type`](https://docs.cloud.google.com/logging/docs/export/bigquery#type-specifier) documentation.
+
+## Query and view logs
+Once you have collected logs and routed to the right destination, now is the time to query and view logs.
+
+The **Logs Explorer interface** lets you retrieve logs, parse and analyze log data, and refine your query parameters. The Logs Explorer contains the following panes:
+
+1. **Action toolbar:** Action toolbar to **refine logs** to **projects** or **storage views**, share a link and learn about logs explorer.
+2. **Query Pane:** Query pane is where you can build queries, view recently viewed and saved queries and a lot more.
+3. **Results toolbar**
+4. **Query results**: Query results is the details of results with a **summary** and **timestamp** that helps troubleshoot further.
+5. **Log fields**: Log fields pane is used to **filter** your options based on various factors such as a **resource type**, **log name**, **project ID**, etc,.
+6. **Histogram**: Histogram is where the query result is visualized as histogram bars, where each bar is a time range and is color coded based on severity.
+
 
 
 ## References
