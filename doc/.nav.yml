@@ -8,3 +8,5 @@ nav:
       - 1.1 BQ Architecture: 1_1_BQ_architecture.md
   - Cloud Logging & Monitoring:
       - 1 Cloud Logging: 2_1_cloud_logging.md
+  - Forecasting on GCP:
+      - 1 Time Series and Forecasting Fundamentals : 3_1_ts_and_fct_fundamentals.md
