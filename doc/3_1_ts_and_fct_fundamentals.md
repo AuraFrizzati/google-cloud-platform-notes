@@ -13,7 +13,16 @@ A sequence includes any data where the **order** of the data items matters (e.g.
 
 ### Applications of sequence models
 
+- Solve **forecasting** problems (e.g. sales, demand, weather and traffic forecasting)
+- Solve **natural language processing** (**NLP**) problems (e.g. machine translation, speech recognition and sentiment analysis)
+- Solve computer vision problems (e.g. image or video generation, captioning)
+
 ## 2. Time series patterns
+
+A **time series** is a **series of data points indexed/listed in time order**. This is in contrast with other sequence models, such as NLP (where the order is based on the position of words in sentences) or computer vision (where the order relies on frames), etc...
+
+Although time series can take different shapes and sizes, they show a common few patterns, including trend, seasonal, cyclical and noise pattern.
+[1:16]
 
 ## 3. Time series analysis
 
