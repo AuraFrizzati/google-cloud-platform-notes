@@ -84,3 +84,44 @@ There are two types:
 **AutoML with Vertex AI Forecast** chooses and configures DL models for you. It uses a technology called **neural architectural search**, to **automatically search the best fit models** among hundreds of ML models and **tune the parameters** for you. You can focus on specifying the business requirements, identify the features that contribute to the forecasting and apply the foreacasting resutls to make downstream business decisions.
 
 ## 4. Forecasting notations
+
+Definitions used by Google
+
+### Univariate versus Multivariate
+
+- **Univariate time series**: you are forecasting future data using **only the historical time series data** (e.g. historical sales to predict future sales)
+- **Multivariate time series**: you forecast future data using **multiple factors** (or **features**) (e.g. adding advertisement and holiday predictors' data, etc ...)
+
+### One versus Multiple time series
+
+- **One time series**: you forecast one variable in **one "section"** (or **grouping**; e.g. you forecast daily sales for one store and one product)
+- **Multiple time series**: you forecast one variable across **multiple "sections"** (or **groupings**; e.g. you forecast daily sales for different stores and/or different products)
+
+### Sparse versus Dense time series
+
+- **Sparse time series**: it contains **mostly zeros** and **few non-zero values**
+- **Dense time series**: it contains **mostly non-zero values**
+
+### Bursty time series
+
+- A **bursty time series data** has a **mix of sparse and non-sparse data** and there are **irregular shifts of magnitude in values**.
+- You should **separate** the **sparse** and **non-sparse data** if categories are distinct (
+
+### Short lifecycle product
+
+A product sold for a brief period. Its **sales' history** is **too short** to capture any **seasonal patterns/trends** (e.g. high-end fashion items, special edition electronic items and higly seasonal special food items).
+
+ML models are usually better at forecasting these short-time series than conventional statistical methods
+
+### Cold start forecasting
+
+A **cold start problem** happens when there is **no historical data** (and methods such as ARIMA are not applicable; ML models are recommended)
+
+### Feature type (Attributes vs Covariates)
+
+The feature type must be specified when configuring a forecasting model: 
+- **Attribute**: a **static feature** that doesn't change over time and is **always available at forecast time** (e.g. item colour and product size
+- **Covariate**: a **dynamic feature that changes over time**. It can be:
+    - **Available** at the **forecast time**: e.g. national holidays and planned promotions
+    - **Unavailable** at the **forecast time**: e.g. actual weather
+
