@@ -21,8 +21,19 @@ A sequence includes any data where the **order** of the data items matters (e.g.
 
 A **time series** is a **series of data points indexed/listed in time order**. This is in contrast with other sequence models, such as NLP (where the order is based on the position of words in sentences) or computer vision (where the order relies on frames), etc...
 
-Although time series can take different shapes and sizes, they show a common few patterns, including trend, seasonal, cyclical and noise pattern.
-[1:16]
+![alt text](img/time_series_patterns.png)
+*From [https://www.statology.org/understanding-time-series-in-python/](https://www.statology.org/understanding-time-series-in-python/)*
+
+Although time series can take different shapes and sizes, they show a common few patterns, including 
+- **Trend pattern**: a **gradual increase or decrease pattern over time** (e.g. increasing housing price in the past decade; decreasing birth rate since 1980)
+- **Seasonal pattern**: a **recurring pattern over successive period**s. Data is affected by **calendar factors** (e.g. time of the day, day of the week or month of the year) and the **pattern** is **repeated at a known and fixed frequency** (e.g. peak hours at a coffee shop or hiloday seasons of a retail store). A time series may show multiple seasonality.
+    - Vertex AI does a godd job in detecting multiple seasonalities in time series 
+- **Cyclical pattern**: it exhibits **fluctuations in a recurring pattern**, which however **do not occur at a fixed frequency or the same amplitude**. The time series showing a cyclical pattern is often affected by **economic cycles** (e.g. unemployment rate over the past few decades). 
+    - A cyclical pattern is **easily confused with a seasonal pattern**: 
+        - Their major difference relies on the **frequency (or regularity) of the pattern**. If the **fluctuations are at a fixed frequency** and are **related to calendar factors**, the pattern is **seasonal**. 
+        - Another difference is that the **amplitude of the seasonal pattern** is **usually the same**, whereas the **amplitude of the cyclical pattern** can be **different**
+        - A third difference (which might not apply to all cases) is the **length of one cycle**. A **seasonal pattern normally happens within a season** (e.g. year one or two) whereas a **cyclical pattern normally occurs during a long period of time** (e.g. one or more decades)
+- Noise pattern
 
 ## 3. Time series analysis
 
