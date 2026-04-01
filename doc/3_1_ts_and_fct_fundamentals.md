@@ -120,6 +120,7 @@ A **cold start problem** happens when there is **no historical data** (and metho
 ### Feature type (Attributes vs Covariates)
 
 The feature type must be specified when configuring a forecasting model: 
+
 - **Attribute**: a **static feature** that doesn't change over time and is **always available at forecast time** (e.g. item colour and product size
 - **Covariate**: a **dynamic feature that changes over time**. It can be:
     - **Available** at the **forecast time**: e.g. national holidays and planned promotions
