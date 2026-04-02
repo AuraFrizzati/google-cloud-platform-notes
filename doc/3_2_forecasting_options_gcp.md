@@ -44,7 +44,7 @@ You can also use them in tandem when you have a heterogeneous time series datase
 
 ![alt text](img/bq_ml_arimaplus_with_vertexai_forecast.png)
 
-In addition to **AutoML** (which let's you build high-qaulity models with minimal effort and limited ML expertise), **Vertex AI Forecast** also provides **Custom training**, a more advanced method that let's you run any **custom container with training applications** in the cloud (so you can train a forecasting odel from scratch and build the pipeline manually with code)
+In addition to **AutoML** (which let's you build high-quality models with minimal effort and limited ML expertise), **Vertex AI Forecast** also provides **Custom training**, a more advanced method that let's you run any **custom container with training applications** in the cloud (so you can train a forecasting odel from scratch and build the pipeline manually with code)
 
 ## 2. Forecasting with BigQuery ML
 
@@ -55,8 +55,10 @@ In addition to **AutoML** (which let's you build high-qaulity models with minima
 - **Robust forecasting**: BQ ML provides an **automated model selection function** that is **continuously tested** and **constantly improved**. As a user, you don't have to choose the model manually
 - **Acceptance**: by various audiences, more and less technical (SQL developers, ML engineers, data analysts and economists)
 
-### Key phases for buikding a forecasting project
+### Key phases for building a forecasting project
+
 These are the **key phases** of using BQ ML to **build a forecasting project**:
+
 1. **Extract, transform and load data into BQ**:
     - You can **enrich** your existing data warehouse with **other data sources** by using SQL joins
 2. **Select** and **pre-process features**:
@@ -81,6 +83,19 @@ If you want to run **large-scale time series foreacasting**, you can use a singl
 
 ![alt text](img/3_bq_ml_arimaplus_largescale.png)
 
+### BigQuery ML time series modelling pipeline
+
+![alt text](img/3_bq_ml_arimaplus_pipeline.png)
+
+1. **Pre-processing**: to load the pipeline, time series data must be pre-processed. 
+    - **BQ ML** helps **handle irregular time intervals**, duplicated timestamps and missing data. 
+    - A practitioner needs considerable domain expertise before and during this stage (e.g. knowing how to join the data sources, decide time series granularity, choose different approaches to handle missing data)
+
+2. **Model development**: this includes training and evaluation
+    - BQ ML automatically handles in the backend tasks such as: cleaning spike and outliers, adjusting holiday effect and hyperparameters tuning
+
+3. **Model prediction/forecasting**: multiple time series models can be aggregated to make an overall forecast.
+    - BQ ML also provide the function `ML.EXPLAIN_FORECAST` which helps you to interpret the impact of different components (e.g. season, tren and holiday) on forecast results
 
 ## 3. Vertex AI
 

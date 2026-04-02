@@ -11,3 +11,4 @@ nav:
   - Forecasting on GCP:
       - 1 Time Series and Forecasting Fundamentals : 3_1_ts_and_fct_fundamentals.md
       - 2 Forecasting Options on Google Cloud : 3_2_forecasting_options_gcp.md
+      - 3 Forecasting Tutorial BigQuery ML: 3_3_forecasting_tutorial_bqml.md
