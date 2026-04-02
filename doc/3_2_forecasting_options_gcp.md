@@ -48,6 +48,39 @@ In addition to **AutoML** (which let's you build high-qaulity models with minima
 
 ## 2. Forecasting with BigQuery ML
 
+### Benefits of using BigQuery ML
+
+- **Low-code solution**: you only need **two essential steps**, **model creation** and **model prediction**. With few SQL command lines you can implement a forecasting solution
+- **Scalabilty and convenience**: if you already use **BigQuery** to store your structured data, it's convenient to develop a forecasting model on the same platform and benefit from the scalability and the data management provided by BigQuery
+- **Robust forecasting**: BQ ML provides an **automated model selection function** that is **continuously tested** and **constantly improved**. As a user, you don't have to choose the model manually
+- **Acceptance**: by various audiences, more and less technical (SQL developers, ML engineers, data analysts and economists)
+
+### Key phases for buikding a forecasting project
+These are the **key phases** of using BQ ML to **build a forecasting project**:
+1. **Extract, transform and load data into BQ**:
+    - You can **enrich** your existing data warehouse with **other data sources** by using SQL joins
+2. **Select** and **pre-process features**:
+    - **Use SQL to create the training dataset** that the model will learn from
+    - **BQ ML** does some of the **pre-processing** for you (e.g. **one-hot encoding of categorical variables** into numerical variables) 
+3. **Create a model inside BQ**:
+    - Use the `CREATE MODEL` command, give the model a name, specify the model type (`ARIMA_PLUS`) and pass the training dataset
+4. **Evaluate the performance of the trained model**:
+    - After the model is trained, you can execute an `ML.EVALUATE` or `ML.ARIMA_EVALUATE` query to **evaluate the performance of the trained model on your evaluation dataset**
+    -  You can **analyse** a **range of evaluation metrics**, including **loss metrics** (e.g. **Root Mean Squared Error/RMSE**)
+5. **Use the model to make predictions**:
+    - Once you are happy with your model performance, you can use it to make predictions
+    - You can use `ML.PREDICT` and `ML.EXPLAIN_FORECAST` commands
+
+### ARIMA+
+
+The BigQuery ML solution is based on a **statistical model ARIMA** (**AutoRegressive Integrated Moving Average**), a widely used statistical model for time series forecasting.
+
+### Large-scale time series forecasting
+
+If you want to run **large-scale time series foreacasting**, you can use a single query that uses the `TIME_SERIES_ID_COL` option, to run **up to 100 million time series with different model pipelines simultaneously**
+
+![alt text](img/3_bq_ml_arimaplus_largescale.png)
+
 
 ## 3. Vertex AI
 
