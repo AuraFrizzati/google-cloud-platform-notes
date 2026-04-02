@@ -44,6 +44,8 @@ You can also use them in tandem when you have a heterogeneous time series datase
 
 ![alt text](img/bq_ml_arimaplus_with_vertexai_forecast.png)
 
+In addition to **AutoML** (which let's you build high-qaulity models with minimal effort and limited ML expertise), **Vertex AI Forecast** also provides **Custom training**, a more advanced method that let's you run any **custom container with training applications** in the cloud (so you can train a forecasting odel from scratch and build the pipeline manually with code)
+
 ## 2. Forecasting with BigQuery ML
 
 
