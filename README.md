@@ -10,21 +10,3 @@ The notes are organised by topic and cover areas such as:
 
 The site is available at: https://aurafrizzati.github.io/google-cloud-platform-notes/
 
-## 🛠️ Local Development
-
-To preview the site locally, install the dependencies and run MkDocs:
-
-```bash
-make install
-make serve
-```
-
-Then visit `http://localhost:8000`.
-
-## 📝 License
-
-This project is open source and available for educational purposes.
-
-## 🤝 Contributing
-
-Suggestions and improvements are welcome! Feel free to open an issue or submit a pull request.
