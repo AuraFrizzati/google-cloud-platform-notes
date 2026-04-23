@@ -204,9 +204,9 @@ This calculator estimates the cost of **BigQuery ML ARIMA_PLUS / ARIMA_PLUS_XREG
 (function () {
   // Candidate model counts from GCP docs
   // Index 0 = AUTO_ARIMA_MAX_ORDER 1, index 4 = order 5
-  var candidatesMultiple  = [6, 12, 20, 30, 42];   // multiple TS, or single d=1
-  var candidatesSingleD1  = [6, 12, 20, 30, 42];   // single TS, d == 1
-  var candidatesSingleDNot1 = [3, 6, 10, 15, 21];  // single TS, d != 1
+  // Multiple TS and single TS with d=1 both use the same multipliers
+  var candidatesMultipleOrD1  = [6, 12, 20, 30, 42];  // multiple TS, or single TS with d = 1
+  var candidatesSingleDNot1   = [3, 6, 10, 15, 21];   // single TS with d != 1
 
   var PRICE_PER_TIB = 390.625;  // USD, europe-west2
   var TIB_IN_BYTES  = 1099511627776;  // 2^40
@@ -240,12 +240,10 @@ This calculator estimates the cost of **BigQuery ML ARIMA_PLUS / ARIMA_PLUS_XREG
     var totalBytes = rawValue * unitMult;
 
     var candidates;
-    if (modelType === 'multiple') {
-      candidates = candidatesMultiple[orderIdx];
+    if (modelType === 'multiple' || dChoice === 'yes') {
+      candidates = candidatesMultipleOrD1[orderIdx];
     } else {
-      candidates = (dChoice === 'yes')
-        ? candidatesSingleD1[orderIdx]
-        : candidatesSingleDNot1[orderIdx];
+      candidates = candidatesSingleDNot1[orderIdx];
     }
 
     var effectiveBytes = totalBytes * candidates;
@@ -256,8 +254,12 @@ This calculator estimates the cost of **BigQuery ML ARIMA_PLUS / ARIMA_PLUS_XREG
     document.getElementById('r-tib-input').textContent    = (totalBytes / TIB_IN_BYTES).toExponential(4) + ' TiB';
     document.getElementById('r-candidates').textContent   = candidates + ' models';
     document.getElementById('r-tib-effective').textContent = effectiveTiB.toExponential(4) + ' TiB';
-    document.getElementById('r-cost').textContent         =
-      'Estimated cost: $' + cost.toFixed(cost < 0.01 ? 8 : cost < 1 ? 6 : 4);
+
+    var decimals;
+    if (cost < 0.01)      { decimals = 8; }
+    else if (cost < 1)    { decimals = 6; }
+    else                  { decimals = 4; }
+    document.getElementById('r-cost').textContent = 'Estimated cost: $' + cost.toFixed(decimals);
 
     resultEl.style.display = 'block';
   };
