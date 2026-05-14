@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://aurafrizzati.github.io/google-cloud-platform-notes/</loc>
+         <lastmod>2026-05-14</lastmod>
+    </url>
+    <url>
+         <loc>https://aurafrizzati.github.io/google-cloud-platform-notes/1_1_BQ_architecture/</loc>
+         <lastmod>2026-05-14</lastmod>
+    </url>
+    <url>
+         <loc>https://aurafrizzati.github.io/google-cloud-platform-notes/2_1_cloud_logging/</loc>
+         <lastmod>2026-05-14</lastmod>
+    </url>
+    <url>
+         <loc>https://aurafrizzati.github.io/google-cloud-platform-notes/3_1_ts_and_fct_fundamentals/</loc>
+         <lastmod>2026-05-14</lastmod>
+    </url>
+    <url>
+         <loc>https://aurafrizzati.github.io/google-cloud-platform-notes/3_2_forecasting_options_gcp/</loc>
+         <lastmod>2026-05-14</lastmod>
+    </url>
+    <url>
+         <loc>https://aurafrizzati.github.io/google-cloud-platform-notes/3_3_forecasting_tutorial_bqml/</loc>
+         <lastmod>2026-05-14</lastmod>
+    </url>
+    <url>
+         <loc>https://aurafrizzati.github.io/google-cloud-platform-notes/bqml_pricing_calculator/</loc>
+         <lastmod>2026-05-14</lastmod>
+    </url>
+    <url>
+         <loc>https://aurafrizzati.github.io/google-cloud-platform-notes/intro_1/</loc>
+         <lastmod>2026-05-14</lastmod>
+    </url>
+</urlset>

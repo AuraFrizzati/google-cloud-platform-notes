@@ -1,0 +1,1292 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://aurafrizzati.github.io/google-cloud-platform-notes/3_2_forecasting_options_gcp/">
+      
+      
+        <link rel="prev" href="../3_1_ts_and_fct_fundamentals/">
+      
+      
+        <link rel="next" href="../3_3_forecasting_tutorial_bqml/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>2 Forecasting Options on Google Cloud - GitHub Pages - GCP Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#forecasting-options-on-google-cloud" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="GitHub Pages - GCP Notes" class="md-header__button md-logo" aria-label="GitHub Pages - GCP Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GitHub Pages - GCP Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2 Forecasting Options on Google Cloud
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="orange"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/AuraFrizzati/google-cloud-platform-notes/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../intro_1/" class="md-tabs__link">
+          
+  
+  
+  Introduction
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../1_1_BQ_architecture/" class="md-tabs__link">
+          
+  
+  
+  BigQuery (BQ)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../2_1_cloud_logging/" class="md-tabs__link">
+          
+  
+  
+  Cloud Logging & Monitoring
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../3_1_ts_and_fct_fundamentals/" class="md-tabs__link">
+          
+  
+  
+  Forecasting on GCP
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="GitHub Pages - GCP Notes" class="md-nav__button md-logo" aria-label="GitHub Pages - GCP Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GitHub Pages - GCP Notes
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/AuraFrizzati/google-cloud-platform-notes/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../intro_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Intro 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    BigQuery (BQ)
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            BigQuery (BQ)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1_1_BQ_architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.1 BQ Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Cloud Logging & Monitoring
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Cloud Logging & Monitoring
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2_1_cloud_logging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Cloud Logging
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Forecasting on GCP
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Forecasting on GCP
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3_1_ts_and_fct_fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Time Series and Forecasting Fundamentals
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    2 Forecasting Options on Google Cloud
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Forecasting Options on Google Cloud
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-forecasting-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Forecasting Options
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Forecasting Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#google-cloud-forecasting-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Google Cloud Forecasting Solutions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Google Cloud Forecasting Solutions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bigquery-ml-arima-vs-vertex-ai-forecast-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      BigQuery ML ARIMA+ vs Vertex AI Forecast comparison
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-forecasting-with-bigquery-ml" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Forecasting with BigQuery ML
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Forecasting with BigQuery ML">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#benefits-of-using-bigquery-ml" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits of using BigQuery ML
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-phases-for-building-a-forecasting-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key phases for building a forecasting project
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arima" class="md-nav__link">
+    <span class="md-ellipsis">
+      ARIMA+
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#large-scale-time-series-forecasting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Large-scale time series forecasting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bigquery-ml-time-series-modelling-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      BigQuery ML time series modelling pipeline
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-vertex-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Vertex AI
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-vertex-ai-forecast-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Vertex AI Forecast Workflow
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-build-demand-forecasting-with-bigquery-ml" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Build Demand Forecasting with BigQuery ML
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3_3_forecasting_tutorial_bqml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Forecasting Tutorial BigQuery ML
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bqml_pricing_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 BigQuery ML Pricing Calculator
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-forecasting-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Forecasting Options
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Forecasting Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#google-cloud-forecasting-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Google Cloud Forecasting Solutions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Google Cloud Forecasting Solutions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bigquery-ml-arima-vs-vertex-ai-forecast-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      BigQuery ML ARIMA+ vs Vertex AI Forecast comparison
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-forecasting-with-bigquery-ml" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Forecasting with BigQuery ML
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Forecasting with BigQuery ML">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#benefits-of-using-bigquery-ml" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits of using BigQuery ML
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-phases-for-building-a-forecasting-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key phases for building a forecasting project
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arima" class="md-nav__link">
+    <span class="md-ellipsis">
+      ARIMA+
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#large-scale-time-series-forecasting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Large-scale time series forecasting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bigquery-ml-time-series-modelling-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      BigQuery ML time series modelling pipeline
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-vertex-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Vertex AI
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-vertex-ai-forecast-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Vertex AI Forecast Workflow
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-build-demand-forecasting-with-bigquery-ml" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Build Demand Forecasting with BigQuery ML
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/AuraFrizzati/google-cloud-platform-notes/edit/main/doc/3_2_forecasting_options_gcp.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/AuraFrizzati/google-cloud-platform-notes/raw/main/doc/3_2_forecasting_options_gcp.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="forecasting-options-on-google-cloud">Forecasting Options on Google Cloud</h1>
+<h2 id="1-forecasting-options">1. Forecasting Options</h2>
+<p>Accurate forecasting is critical in practice, but there are <strong>challenges</strong> faced by current <strong>forecasting solutions</strong>:</p>
+<ul>
+<li>They usually require both <strong>domain knowledge</strong> and <strong>technical skills</strong></li>
+<li>They require <strong>significant manual efforts</strong> in <strong>model construction</strong>, <strong>feature engineering</strong> and <strong>hyper-parameter tuning</strong></li>
+<li>They <strong>can't handle</strong> a <strong>large amount</strong> of <strong>diverse data</strong> and make accurate predictions</li>
+</ul>
+<h3 id="google-cloud-forecasting-solutions">Google Cloud Forecasting Solutions</h3>
+<p>To address these challenges, <strong>Google Cloud</strong> provides <strong>two primary options</strong> to build a <strong>time series forecasting model</strong>:
+- <strong>BigQuery ML</strong>: a <strong>low-code solution</strong> to <strong>build a forecast model</strong> with <strong>ARIMA+</strong>
+- <strong>Vertex AI Forecast</strong>: a <strong>no-code UI-based solution</strong> to build a forecast model with <strong>AutoML</strong></p>
+<p>These options aim to <strong>reduce the manual work</strong> and allow data scientists to <strong>focus on business needs</strong> instead of technical operations. They also apply <strong>state-of-the-art ML technologies</strong> to handle <strong>large amounts of data</strong> and <strong>improve accuracy</strong> of <strong>predictions</strong></p>
+<p>Let's look at the <strong>general forecasting workflow</strong> and the <strong>key features</strong> of each option:</p>
+<p><img alt="alt text" src="../img/forecasting_workflows_options_gcp.png" />
+From <a href="https://cloud.google.com/blog/topics/developers-practitioners/vertex-forecast-overview">https://cloud.google.com/blog/topics/developers-practitioners/vertex-forecast-overview</a></p>
+<ol>
+<li><strong>Define</strong> your <strong>time series data</strong> (schema and target)</li>
+<li><strong>Join the data</strong> from <strong>multiple datasets</strong> (if required, e.g. supporting datasets containing additional features: attributes and/or covariates). The process of choosing which data to include and deciding the best way to represent it is called <strong>feature engineering</strong> (for example, categorical variables such as country and region need to be transferred to numeric variables to be included in the forecasting model). </li>
+<li><strong>Vertex AI option</strong> (<strong>Deep Learning (DL) model</strong> through UI and Python SDK). <strong>AutoML</strong> automatically performs: <strong>feature engineering</strong>, <strong>model selection</strong>, <strong>hyperparameter tuning</strong>, <strong>ensemble</strong></li>
+<li><strong>BigQuery ML</strong> (<strong>Statistical model</strong> through SQL or SDK). <strong>ARIMA+</strong> automatically performs: <strong>missing-values imputation</strong>, <strong>holiday effects adjustments</strong>, <strong>seasonal</strong> and <strong>trend decomposition</strong>, <strong>spike</strong> and <strong>anomaly identification</strong></li>
+<li><strong>Evaluate model behaviour</strong></li>
+<li><strong>Create</strong> and <strong>visualise forecasts</strong></li>
+</ol>
+<h4 id="bigquery-ml-arima-vs-vertex-ai-forecast-comparison">BigQuery ML ARIMA+ vs Vertex AI Forecast comparison</h4>
+<p><img alt="alt text" src="../img/bq_ml_arimaplus_vs_vertexai_forecast.png" /></p>
+<ul>
+<li><strong>Univariate time series</strong>: when the data only contains <strong>one target variable</strong> changing over time (e.g. daily sales of one product), <strong>BQ ML ARIMA+</strong> is recommended because it is based on a statistical model, which takes <strong>less time to train</strong></li>
+<li><strong>Multivariate time series</strong>: <strong>multiple target variables</strong> are changing over time (e.g. daily sales of various products), <strong>Vertex AI Forecast is a good choice</strong> because it benefits from DL models and preforms better with a <strong>global model combining multiple time series</strong>. However, <strong>BQ ML</strong> has recently added a new feature to support multivariate forecasting using the <code>ARIMA_PLUS_XREG</code> model.</li>
+<li><strong>Number of features</strong>: <strong>BQ ML ARIMA+</strong> works bets when <strong>fewer features</strong> are included in the forecast, while <strong>Vertex AI Forecast</strong> works bets when <strong>many features</strong> are involved. This is because Vertex AI can detect the relationships and incorporate the dependencies among these features used in an ML model.</li>
+<li><strong>Repeated patterns</strong>: both <strong>BQ ML ARIMA+</strong> and <strong>Vertex AI Forecast</strong> can detect them. However, the <strong>latter</strong> can also extract and then extrapolate upon <strong>feature-driven patterns</strong>.</li>
+<li><strong>Sparse data</strong>: <strong>Vertex AI Forecast</strong> performs better with <strong>cold starts</strong> and <strong>products with short life cycle</strong>.</li>
+</ul>
+<p>In summary: <strong>BQ ML ARIMA+</strong> is better for <strong>univariate time series data with few features and repeated patterns</strong>, while <strong>Vertex AI Forecast</strong> is good at handling <strong>multivariate data</strong> (due to its capability of modelling covariates), <strong>data with many features</strong>, <strong>cold starts</strong> and <strong>products with a short life-cycle</strong>. </p>
+<p>You can also use them in tandem when you have a heterogeneous time series dataset (simpler and more complex data):</p>
+<p><img alt="alt text" src="../img/bq_ml_arimaplus_with_vertexai_forecast.png" /></p>
+<p>In addition to <strong>AutoML</strong> (which let's you build high-quality models with minimal effort and limited ML expertise), <strong>Vertex AI Forecast</strong> also provides <strong>Custom training</strong>, a more advanced method that let's you run any <strong>custom container with training applications</strong> in the cloud (so you can train a forecasting odel from scratch and build the pipeline manually with code)</p>
+<h2 id="2-forecasting-with-bigquery-ml">2. Forecasting with BigQuery ML</h2>
+<h3 id="benefits-of-using-bigquery-ml">Benefits of using BigQuery ML</h3>
+<ul>
+<li><strong>Low-code solution</strong>: you only need <strong>two essential steps</strong>, <strong>model creation</strong> and <strong>model prediction</strong>. With few SQL command lines you can implement a forecasting solution</li>
+<li><strong>Scalabilty and convenience</strong>: if you already use <strong>BigQuery</strong> to store your structured data, it's convenient to develop a forecasting model on the same platform and benefit from the scalability and the data management provided by BigQuery</li>
+<li><strong>Robust forecasting</strong>: BQ ML provides an <strong>automated model selection function</strong> that is <strong>continuously tested</strong> and <strong>constantly improved</strong>. As a user, you don't have to choose the model manually</li>
+<li><strong>Acceptance</strong>: by various audiences, more and less technical (SQL developers, ML engineers, data analysts and economists)</li>
+</ul>
+<h3 id="key-phases-for-building-a-forecasting-project">Key phases for building a forecasting project</h3>
+<p>These are the <strong>key phases</strong> of using BQ ML to <strong>build a forecasting project</strong>:</p>
+<ol>
+<li><strong>Extract, transform and load data into BQ</strong>:<ul>
+<li>You can <strong>enrich</strong> your existing data warehouse with <strong>other data sources</strong> by using SQL joins</li>
+</ul>
+</li>
+<li><strong>Select</strong> and <strong>pre-process features</strong>:<ul>
+<li><strong>Use SQL to create the training dataset</strong> that the model will learn from</li>
+<li><strong>BQ ML</strong> does some of the <strong>pre-processing</strong> for you (e.g. <strong>one-hot encoding of categorical variables</strong> into numerical variables) </li>
+</ul>
+</li>
+<li><strong>Create a model inside BQ</strong>:<ul>
+<li>Use the <code>CREATE MODEL</code> command, give the model a name, specify the model type (<code>ARIMA_PLUS</code>) and pass the training dataset</li>
+</ul>
+</li>
+<li><strong>Evaluate the performance of the trained model</strong>:<ul>
+<li>After the model is trained, you can execute an <code>ML.EVALUATE</code> or <code>ML.ARIMA_EVALUATE</code> query to <strong>evaluate the performance of the trained model on your evaluation dataset</strong></li>
+<li>You can <strong>analyse</strong> a <strong>range of evaluation metrics</strong>, including <strong>loss metrics</strong> (e.g. <strong>Root Mean Squared Error/RMSE</strong>)</li>
+</ul>
+</li>
+<li><strong>Use the model to make predictions</strong>:<ul>
+<li>Once you are happy with your model performance, you can use it to make predictions</li>
+<li>You can use <code>ML.PREDICT</code> and <code>ML.EXPLAIN_FORECAST</code> commands</li>
+</ul>
+</li>
+</ol>
+<h3 id="arima">ARIMA+</h3>
+<p>The BigQuery ML solution is based on a <strong>statistical model ARIMA</strong> (<strong>AutoRegressive Integrated Moving Average</strong>), a widely used statistical model for time series forecasting.</p>
+<h3 id="large-scale-time-series-forecasting">Large-scale time series forecasting</h3>
+<p>If you want to run <strong>large-scale time series foreacasting</strong>, you can use a single query that uses the <code>TIME_SERIES_ID_COL</code> option, to run <strong>up to 100 million time series with different model pipelines simultaneously</strong></p>
+<p><img alt="alt text" src="../img/3_bq_ml_arimaplus_largescale.png" /></p>
+<h3 id="bigquery-ml-time-series-modelling-pipeline">BigQuery ML time series modelling pipeline</h3>
+<p><img alt="alt text" src="../img/3_bq_ml_arimaplus_pipeline.png" /></p>
+<ol>
+<li>
+<p><strong>Pre-processing</strong>: to load the pipeline, time series data must be pre-processed. </p>
+<ul>
+<li><strong>BQ ML</strong> helps <strong>handle irregular time intervals</strong>, duplicated timestamps and missing data. </li>
+<li>A practitioner needs considerable domain expertise before and during this stage (e.g. knowing how to join the data sources, decide time series granularity, choose different approaches to handle missing data)</li>
+</ul>
+</li>
+<li>
+<p><strong>Model development</strong>: this includes training and evaluation</p>
+<ul>
+<li>BQ ML automatically handles in the backend tasks such as: cleaning spike and outliers, adjusting holiday effect and hyperparameters tuning</li>
+</ul>
+</li>
+<li>
+<p><strong>Model prediction/forecasting</strong>: multiple time series models can be aggregated to make an overall forecast.</p>
+<ul>
+<li>BQ ML also provide the function <code>ML.EXPLAIN_FORECAST</code> which helps you to interpret the impact of different components (e.g. season, tren and holiday) on forecast results</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-vertex-ai">3. Vertex AI</h2>
+<h2 id="4-vertex-ai-forecast-workflow">4. Vertex AI Forecast Workflow</h2>
+<h2 id="5-build-demand-forecasting-with-bigquery-ml">5. Build Demand Forecasting with BigQuery ML</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../3_1_ts_and_fct_fundamentals/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 1 Time Series and Forecasting Fundamentals">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                1 Time Series and Forecasting Fundamentals
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../3_3_forecasting_tutorial_bqml/" class="md-footer__link md-footer__link--next" aria-label="Next: 3 Forecasting Tutorial BigQuery ML">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                3 Forecasting Tutorial BigQuery ML
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.footer", "content.action.edit", "content.action.view", "content.code.copy"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

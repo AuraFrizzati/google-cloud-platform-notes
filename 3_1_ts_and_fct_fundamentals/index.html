@@ -1,0 +1,1395 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://aurafrizzati.github.io/google-cloud-platform-notes/3_1_ts_and_fct_fundamentals/">
+      
+      
+        <link rel="prev" href="../2_1_cloud_logging/">
+      
+      
+        <link rel="next" href="../3_2_forecasting_options_gcp/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>1 Time Series and Forecasting Fundamentals - GitHub Pages - GCP Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#time-series-and-forecasting-fundamentals" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="GitHub Pages - GCP Notes" class="md-header__button md-logo" aria-label="GitHub Pages - GCP Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GitHub Pages - GCP Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              1 Time Series and Forecasting Fundamentals
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="orange"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/AuraFrizzati/google-cloud-platform-notes/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../intro_1/" class="md-tabs__link">
+          
+  
+  
+  Introduction
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../1_1_BQ_architecture/" class="md-tabs__link">
+          
+  
+  
+  BigQuery (BQ)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../2_1_cloud_logging/" class="md-tabs__link">
+          
+  
+  
+  Cloud Logging & Monitoring
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Forecasting on GCP
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="GitHub Pages - GCP Notes" class="md-nav__button md-logo" aria-label="GitHub Pages - GCP Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GitHub Pages - GCP Notes
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/AuraFrizzati/google-cloud-platform-notes/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../intro_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Intro 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    BigQuery (BQ)
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            BigQuery (BQ)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1_1_BQ_architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.1 BQ Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Cloud Logging & Monitoring
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Cloud Logging & Monitoring
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2_1_cloud_logging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Cloud Logging
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Forecasting on GCP
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Forecasting on GCP
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    1 Time Series and Forecasting Fundamentals
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Time Series and Forecasting Fundamentals
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-sequence-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Sequence models
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Sequence models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#applications-of-sequence-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Applications of sequence models
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-time-series-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Time series patterns
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-time-series-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Time series analysis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Time series analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-type-of-use-cases-involve-a-time-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      What type of use cases involve a time series?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-are-the-methods-and-techniques-used-in-time-series-forecasting" class="md-nav__link">
+    <span class="md-ellipsis">
+      What are the methods and techniques used in time series forecasting?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What are the methods and techniques used in time series forecasting?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#autoregressive-integrated-moving-average-arima-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      AutoRegressive Integrated Moving Average (ARIMA) models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#machine-learning-ml-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Machine Learning (ML) models
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-forecasting-notations" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Forecasting notations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Forecasting notations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#univariate-versus-multivariate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Univariate versus Multivariate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#one-versus-multiple-time-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      One versus Multiple time series
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse-versus-dense-time-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sparse versus Dense time series
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bursty-time-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bursty time series
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#short-lifecycle-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      Short lifecycle product
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cold-start-forecasting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cold start forecasting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feature-type-attributes-vs-covariates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Feature type (Attributes vs Covariates)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3_2_forecasting_options_gcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Forecasting Options on Google Cloud
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3_3_forecasting_tutorial_bqml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Forecasting Tutorial BigQuery ML
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bqml_pricing_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 BigQuery ML Pricing Calculator
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-sequence-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Sequence models
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Sequence models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#applications-of-sequence-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Applications of sequence models
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-time-series-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Time series patterns
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-time-series-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Time series analysis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Time series analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-type-of-use-cases-involve-a-time-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      What type of use cases involve a time series?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-are-the-methods-and-techniques-used-in-time-series-forecasting" class="md-nav__link">
+    <span class="md-ellipsis">
+      What are the methods and techniques used in time series forecasting?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What are the methods and techniques used in time series forecasting?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#autoregressive-integrated-moving-average-arima-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      AutoRegressive Integrated Moving Average (ARIMA) models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#machine-learning-ml-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Machine Learning (ML) models
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-forecasting-notations" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Forecasting notations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Forecasting notations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#univariate-versus-multivariate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Univariate versus Multivariate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#one-versus-multiple-time-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      One versus Multiple time series
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse-versus-dense-time-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sparse versus Dense time series
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bursty-time-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bursty time series
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#short-lifecycle-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      Short lifecycle product
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cold-start-forecasting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cold start forecasting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feature-type-attributes-vs-covariates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Feature type (Attributes vs Covariates)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/AuraFrizzati/google-cloud-platform-notes/edit/main/doc/3_1_ts_and_fct_fundamentals.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/AuraFrizzati/google-cloud-platform-notes/raw/main/doc/3_1_ts_and_fct_fundamentals.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="time-series-and-forecasting-fundamentals">Time Series and Forecasting Fundamentals</h1>
+<h2 id="1-sequence-models">1. Sequence models</h2>
+<p>A sequence includes any data where the <strong>order</strong> of the data items matters (e.g. a sentence is an ordered sequence of words, not just any sequence of words). In other words, sequences are data points that can be <strong>meaningfully ordered</strong>, so that <strong>earlier observations provide information about later observations</strong>. </p>
+<ul>
+<li>
+<p>Simple definition of <strong>Forecasting</strong> --&gt; You should be able to take a <strong>slice of past observations</strong> and use them to get a <strong>better-than-chance prediction of later observations</strong>.</p>
+</li>
+<li>
+<p><strong>Sequences</strong> can be either the <strong>input</strong> or the <strong>output</strong> of a machine learning <strong>model</strong>. According to this perspective, we can fit sequence models into three types:</p>
+<ul>
+<li><strong>One-to-sequence</strong>: <strong>one input</strong> is passed in and the model generates a <strong>sequence as the output</strong>. A typical example is image captioning where one image is given as input to generate its textual description (e.g. a few sentences)</li>
+<li><strong>Sequence-to-one</strong>: a <strong>sequence is the input</strong> to the model and <strong>one output is generated</strong>. Sentiment analysis is a typical sequence-to-one problem, based on the comments or few sentences, the machine can generate one rating.</li>
+<li><strong>Sequence-to-sequence</strong>: <strong>sequence is both the model's input and output</strong>. Google Translate is an example of a model that delas with sequence-to-sequence problems</li>
+</ul>
+</li>
+</ul>
+<h3 id="applications-of-sequence-models">Applications of sequence models</h3>
+<ul>
+<li>Solve <strong>forecasting</strong> problems (e.g. sales, demand, weather and traffic forecasting)</li>
+<li>Solve <strong>natural language processing</strong> (<strong>NLP</strong>) problems (e.g. machine translation, speech recognition and sentiment analysis)</li>
+<li>Solve computer vision problems (e.g. image or video generation, captioning)</li>
+</ul>
+<h2 id="2-time-series-patterns">2. Time series patterns</h2>
+<p>A <strong>time series</strong> is a <strong>series of data points indexed/listed in time order</strong>. This is in contrast with other sequence models, such as NLP (where the order is based on the position of words in sentences) or computer vision (where the order relies on frames), etc...</p>
+<p><img alt="alt text" src="../img/time_series_patterns.png" />
+<em>From <a href="https://www.statology.org/understanding-time-series-in-python/">https://www.statology.org/understanding-time-series-in-python/</a></em></p>
+<p>Although time series can take different shapes and sizes, they show a common few patterns, including 
+- <strong>Trend pattern</strong>: a <strong>gradual increase or decrease pattern over time</strong> (e.g. increasing housing price in the past decade; decreasing birth rate since 1980)
+- <strong>Seasonal pattern</strong>: a <strong>recurring pattern over successive period</strong>s. Data is affected by <strong>calendar factors</strong> (e.g. time of the day, day of the week or month of the year) and the <strong>pattern</strong> is <strong>repeated at a known and fixed frequency</strong> (e.g. peak hours at a coffee shop or hiloday seasons of a retail store). A time series may show multiple seasonality.
+    - Vertex AI does a godd job in detecting multiple seasonalities in time series 
+- <strong>Cyclical pattern</strong>: it exhibits <strong>fluctuations in a recurring pattern</strong>, which however <strong>do not occur at a fixed frequency or the same amplitude</strong>. The time series showing a cyclical pattern is often affected by <strong>economic cycles</strong> (e.g. unemployment rate over the past few decades). 
+    - A cyclical pattern is <strong>easily confused with a seasonal pattern</strong>: 
+        - Their major difference relies on the <strong>frequency (or regularity) of the pattern</strong>. If the <strong>fluctuations are at a fixed frequency</strong> and are <strong>related to calendar factors</strong>, the pattern is <strong>seasonal</strong>. 
+        - Another difference is that the <strong>amplitude of the seasonal pattern</strong> is <strong>usually the same</strong>, whereas the <strong>amplitude of the cyclical pattern</strong> can be <strong>different</strong>
+        - A third difference (which might not apply to all cases) is the <strong>length of one cycle</strong>. A <strong>seasonal pattern normally happens within a season</strong> (e.g. year one or two) whereas a <strong>cyclical pattern normally occurs during a long period of time</strong> (e.g. one or more decades)
+- <strong>Noise (irregular) pattern</strong>: it shows <strong>random fluctuations rise and fall around a flat line</strong> (or a number). There isn't a predictable trend. A good forecasting model should in theory catch the noise from the historical data and simply perpetuate the last value forward as a flat forecast (naive forecast). Identifyin noise answers a crucial question: when should you stop fitting the model?</p>
+<p>A <strong>time series</strong> is often an <strong>aggregation</strong> or a <strong>combination of these patterns</strong>. <strong>Time series analysis</strong> aims to <strong>discover these patterns</strong> and <strong>make predictions</strong> by <strong>using different techniques</strong>.</p>
+<h2 id="3-time-series-analysis">3. Time series analysis</h2>
+<h3 id="what-type-of-use-cases-involve-a-time-series">What type of use cases involve a time series?</h3>
+<p>There are two types: 
+- <strong>Forecasting</strong>: you <strong>predict the future</strong> (a <strong>sequence of values</strong>) by <strong>identifying the patterns and trends of historical data</strong>. It has been overwhelmingly used in business paractice and will be the focus of the rest of the course 
+- <strong>Analysis</strong>: you <strong>classify different time series</strong>, <strong>discover clusters</strong> and <strong>detect anomalies</strong></p>
+<h3 id="what-are-the-methods-and-techniques-used-in-time-series-forecasting">What are the methods and techniques used in time series forecasting?</h3>
+<ul>
+<li><strong>Qualitative methods</strong>: rely on human expert judgement. You normally use it when no historical data is available or applicable. For example, the sales forecasting in a startup company might depend on a combination of factors such as industry, economy and competing companies instead of its own historical data</li>
+<li><strong>Quantitative methods</strong>: used when the past data is available and can be quantified. Also, you can assume that the pattern in the past data remains unchanged in the future. Two major quantitaive techniques can be used:<ul>
+<li>Statistical models</li>
+<li>Machine Learning models (deep learning)</li>
+</ul>
+</li>
+</ul>
+<h4 id="autoregressive-integrated-moving-average-arima-models">AutoRegressive Integrated Moving Average (ARIMA) models</h4>
+<ul>
+<li><strong>ARIMA</strong> is a <strong>family of statistical models</strong> used in time series forecasting (variants include AR, MA, ARMA and seasonal ARIMA or SARIMA)</li>
+<li><strong>BQ ML</strong> on Google Cloud is based on the ARIMA model</li>
+</ul>
+<h4 id="machine-learning-ml-models">Machine Learning (ML) models</h4>
+<ul>
+<li><strong>Deep learning (DL) ML models</strong> have been used for forecasting: <ul>
+<li><strong>convolutional neural networks (CNNs)</strong></li>
+<li><strong>deep neural networks (DNNs)</strong>: deep neural networks with multiple hidden layers</li>
+<li><strong>recurrent neural networks (RNNs)</strong>: a neural network with short-term memory</li>
+<li><strong>gate recurrent units (GRUs)</strong></li>
+<li><strong>long short-term memory networks (LSTMs)</strong>: a neural network with long-term memory</li>
+<li><strong>gate recurrent units (GRUs)</strong>: an improved and simplified variant of LSTM</li>
+<li><strong>transformers</strong>: they introduce self-attention and feed-forward layers in both decoder and decoder architectures</li>
+</ul>
+</li>
+<li><strong>Tree-based ML models</strong><ul>
+<li><strong>extreme gradient boosting (XGBoost)</strong></li>
+</ul>
+</li>
+</ul>
+<p><strong>Benefits of using DL models</strong> for forecasting: 
+- they can <strong>process a large amount</strong> of <strong>diversified data</strong>:
+    - rich metadata (e.g.: product attributes, location attributes)
+    - historical factors (e.g.: inventory, weather)
+    - factors known in the future (e.g.: planned promotions or events, holidays)
+    - unstructured data (such as text)
+- they can <strong>model complex scenarios</strong>:
+    - cold start or new items
+    - short product life cycles
+    - burstiness, sparsity
+    - hierarchical forecast</p>
+<p><strong>AutoML with Vertex AI Forecast</strong> chooses and configures DL models for you. It uses a technology called <strong>neural architectural search</strong>, to <strong>automatically search the best fit models</strong> among hundreds of ML models and <strong>tune the parameters</strong> for you. You can focus on specifying the business requirements, identify the features that contribute to the forecasting and apply the foreacasting resutls to make downstream business decisions.</p>
+<h2 id="4-forecasting-notations">4. Forecasting notations</h2>
+<p>Definitions used by Google</p>
+<h3 id="univariate-versus-multivariate">Univariate versus Multivariate</h3>
+<ul>
+<li><strong>Univariate time series</strong>: you are forecasting future data using <strong>only the historical time series data</strong> (e.g. historical sales to predict future sales)</li>
+<li><strong>Multivariate time series</strong>: you forecast future data using <strong>multiple factors</strong> (or <strong>features</strong>) (e.g. adding advertisement and holiday predictors' data, etc ...)</li>
+</ul>
+<h3 id="one-versus-multiple-time-series">One versus Multiple time series</h3>
+<ul>
+<li><strong>One time series</strong>: you forecast one variable in <strong>one "section"</strong> (or <strong>grouping</strong>; e.g. you forecast daily sales for one store and one product)</li>
+<li><strong>Multiple time series</strong>: you forecast one variable across <strong>multiple "sections"</strong> (or <strong>groupings</strong>; e.g. you forecast daily sales for different stores and/or different products)</li>
+</ul>
+<h3 id="sparse-versus-dense-time-series">Sparse versus Dense time series</h3>
+<ul>
+<li><strong>Sparse time series</strong>: it contains <strong>mostly zeros</strong> and <strong>few non-zero values</strong></li>
+<li><strong>Dense time series</strong>: it contains <strong>mostly non-zero values</strong></li>
+</ul>
+<h3 id="bursty-time-series">Bursty time series</h3>
+<ul>
+<li>A <strong>bursty time series data</strong> has a <strong>mix of sparse and non-sparse data</strong> and there are <strong>irregular shifts of magnitude in values</strong>.</li>
+<li>You should <strong>separate</strong> the <strong>sparse</strong> and <strong>non-sparse data</strong> if categories are distinct (</li>
+</ul>
+<h3 id="short-lifecycle-product">Short lifecycle product</h3>
+<p>A product sold for a brief period. Its <strong>sales' history</strong> is <strong>too short</strong> to capture any <strong>seasonal patterns/trends</strong> (e.g. high-end fashion items, special edition electronic items and higly seasonal special food items).</p>
+<p>ML models are usually better at forecasting these short-time series than conventional statistical methods</p>
+<h3 id="cold-start-forecasting">Cold start forecasting</h3>
+<p>A <strong>cold start problem</strong> happens when there is <strong>no historical data</strong> (and methods such as ARIMA are not applicable; ML models are recommended)</p>
+<h3 id="feature-type-attributes-vs-covariates">Feature type (Attributes vs Covariates)</h3>
+<p>The feature type must be specified when configuring a forecasting model: </p>
+<ul>
+<li><strong>Attribute</strong>: a <strong>static feature</strong> that doesn't change over time and is <strong>always available at forecast time</strong> (e.g. item colour and product size</li>
+<li><strong>Covariate</strong>: a <strong>dynamic feature that changes over time</strong>. It can be:<ul>
+<li><strong>Available</strong> at the <strong>forecast time</strong>: e.g. national holidays and planned promotions</li>
+<li><strong>Unavailable</strong> at the <strong>forecast time</strong>: e.g. actual weather</li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../2_1_cloud_logging/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 1 Cloud Logging">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                1 Cloud Logging
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../3_2_forecasting_options_gcp/" class="md-footer__link md-footer__link--next" aria-label="Next: 2 Forecasting Options on Google Cloud">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                2 Forecasting Options on Google Cloud
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.footer", "content.action.edit", "content.action.view", "content.code.copy"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
