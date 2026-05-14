@@ -239,15 +239,12 @@ This calculator estimates the cost of **BigQuery ML ARIMA_PLUS / ARIMA_PLUS_XREG
   <hr class="section-divider" />
   <p class="section-heading">Pricing</p>
 
-  <label for="std-price">Standard BQ ML price per TiB (USD)</label>
+  <label for="std-price">Standard BQ unit price per TiB (USD)</label>
   <div class="input-row">
     <input type="number" id="std-price" min="0" step="any" value="7.8125" style="max-width:150px; flex:none;" />
     <span class="unit-label">USD / TiB</span>
   </div>
-  <p class="hint">Default is $7.8125 / TiB for europe-west2. Change for other regions or if the standard price has been updated.</p>
-  <div class="derived-price">
-    ARIMA_PLUS unit price &nbsp;=&nbsp; $<span id="std-price-display">7.8125</span> &nbsp;×&nbsp; 50 (BQ ML tier factor) &nbsp;=&nbsp; <strong>$<span id="arima-price-display">390.6250</span> / TiB</strong>
-  </div>
+  <p class="hint">Default is $7.8125 / TiB for europe-west2 (standard on-demand BQ query price). Change for other regions or if the price has been updated. The ARIMA_PLUS tier factor (×50) is applied to the processed <em>volume</em>, not the unit price.</p>
 
   <hr class="section-divider" />
   <p class="section-heading">Currency conversion <span style="font-weight:400; text-transform:none; font-size:1.1em;">(optional)</span></p>
@@ -279,24 +276,24 @@ This calculator estimates the cost of **BigQuery ML ARIMA_PLUS / ARIMA_PLUS_XREG
       <span class="result-value" id="r-bytes-input"></span>
     </div>
     <div class="result-row">
-      <span class="result-label">Equivalent in TiB</span>
+      <span class="result-label">Raw scan (TiB)</span>
       <span class="result-value" id="r-tib-input"></span>
+    </div>
+    <div class="result-row">
+      <span class="result-label">ML tier factor (ARIMA_PLUS)</span>
+      <span class="result-value">× 50</span>
     </div>
     <div class="result-row">
       <span class="result-label">Candidate models (multiplier)</span>
       <span class="result-value" id="r-candidates"></span>
     </div>
     <div class="result-row">
-      <span class="result-label">Effective TiB billed</span>
-      <span class="result-value" id="r-tib-effective"></span>
+      <span class="result-label">Total Processed (TiB)</span>
+      <span class="result-value" id="r-total-processed"></span>
     </div>
     <div class="result-row">
-      <span class="result-label">Standard BQ ML price</span>
+      <span class="result-label">Standard BQ unit price</span>
       <span class="result-value" id="r-std-price"></span>
-    </div>
-    <div class="result-row">
-      <span class="result-label">ARIMA_PLUS price (× 50 tier factor)</span>
-      <span class="result-value" id="r-arima-price"></span>
     </div>
     <div class="result-row">
       <span class="result-label">Cost (USD)</span>
@@ -345,14 +342,6 @@ This calculator estimates the cost of **BigQuery ML ARIMA_PLUS / ARIMA_PLUS_XREG
     return val.toFixed(d);
   }
 
-  // Live update of ARIMA_PLUS derived price display
-  function updateDerivedPrice() {
-    var raw = parseFloat(document.getElementById('std-price').value);
-    var std = (isNaN(raw) || raw < 0) ? 7.8125 : raw;
-    document.getElementById('std-price-display').textContent   = std.toString();
-    document.getElementById('arima-price-display').textContent = (std * ML_TIER_FACTOR).toFixed(4);
-  }
-
   window.calculateCost = function () {
     var errorEl  = document.getElementById('calc-error');
     var resultEl = document.getElementById('calc-result');
@@ -384,11 +373,10 @@ This calculator estimates the cost of **BigQuery ML ARIMA_PLUS / ARIMA_PLUS_XREG
     var finalCandidates = overrideApplied ? overrideRaw : computedCandidates;
 
     // ── Pricing ───────────────────────────────────────────────────────────────
-    var stdRaw      = parseFloat(document.getElementById('std-price').value);
-    var stdPrice    = (isNaN(stdRaw) || stdRaw <= 0) ? 7.8125 : stdRaw;
-    var arimaPrice  = stdPrice * ML_TIER_FACTOR;
-    var effectiveTiB = inputTiB * finalCandidates;
-    var costUSD      = effectiveTiB * arimaPrice;
+    var stdRaw            = parseFloat(document.getElementById('std-price').value);
+    var stdPrice          = (isNaN(stdRaw) || stdRaw <= 0) ? 7.8125 : stdRaw;
+    var totalProcessedTiB = inputTiB * ML_TIER_FACTOR * finalCandidates;
+    var costUSD           = totalProcessedTiB * stdPrice;
 
     // ── Currency conversion ───────────────────────────────────────────────────
     var convRaw  = document.getElementById('conv-rate').value.trim();
@@ -405,14 +393,13 @@ This calculator estimates the cost of **BigQuery ML ARIMA_PLUS / ARIMA_PLUS_XREG
     var finalCost        = hasDisc ? baseBeforeDisc - discountAmount : baseBeforeDisc;
 
     // ── Populate main result rows ─────────────────────────────────────────────
-    document.getElementById('r-bytes-input').textContent   = formatBytes(totalBytes);
-    document.getElementById('r-tib-input').textContent     = inputTiB.toExponential(4) + ' TiB';
-    document.getElementById('r-candidates').textContent    = finalCandidates + ' models'
+    document.getElementById('r-bytes-input').textContent      = formatBytes(totalBytes);
+    document.getElementById('r-tib-input').textContent        = inputTiB.toExponential(4) + ' TiB';
+    document.getElementById('r-candidates').textContent       = '× ' + finalCandidates + ' models'
       + (overrideApplied ? ' (manually overridden; computed was ' + computedCandidates + ')' : '');
-    document.getElementById('r-tib-effective').textContent = effectiveTiB.toExponential(4) + ' TiB';
-    document.getElementById('r-std-price').textContent     = '$' + stdPrice + ' / TiB';
-    document.getElementById('r-arima-price').textContent   = '$' + fmtMoney(arimaPrice) + ' / TiB';
-    document.getElementById('r-cost-usd').textContent      = '$' + fmtMoney(costUSD);
+    document.getElementById('r-total-processed').textContent  = totalProcessedTiB.toExponential(4) + ' TiB';
+    document.getElementById('r-std-price').textContent        = '$' + stdPrice + ' / TiB';
+    document.getElementById('r-cost-usd').textContent         = '$' + fmtMoney(costUSD);
 
     var convRow = document.getElementById('r-conv-row');
     if (hasConv) {
@@ -438,21 +425,20 @@ This calculator estimates the cost of **BigQuery ML ARIMA_PLUS / ARIMA_PLUS_XREG
     // ── Calculation steps note ────────────────────────────────────────────────
     var n = 1;
     var steps = [];
-    steps.push(n++ + '. input bytes: ' + formatBytes(totalBytes)
+    steps.push(n++ + '. raw scan: ' + formatBytes(totalBytes)
       + ' = ' + inputTiB.toExponential(4) + ' TiB');
-    steps.push(n++ + '. candidate models (multiplier): '
+    steps.push(n++ + '. ml tier factor (ARIMA_PLUS): × ' + ML_TIER_FACTOR);
+    steps.push(n++ + '. candidate models (multiplier): × ' + finalCandidates
       + (overrideApplied
-          ? finalCandidates + ' (manually overridden; computed value from AUTO_ARIMA_MAX_ORDER = '
+          ? ' (manually overridden; computed value from AUTO_ARIMA_MAX_ORDER = '
             + (orderIdx + 1) + ' was ' + computedCandidates + ')'
-          : finalCandidates + ' (from AUTO_ARIMA_MAX_ORDER = ' + (orderIdx + 1) + ')'));
-    steps.push(n++ + '. effective TiB billed: '
-      + inputTiB.toExponential(4) + ' TiB × ' + finalCandidates + ' = '
-      + effectiveTiB.toExponential(4) + ' TiB');
-    steps.push(n++ + '. standard BQ ML price: $' + stdPrice + ' / TiB');
-    steps.push(n++ + '. ARIMA_PLUS price: $' + stdPrice + ' × ' + ML_TIER_FACTOR
-      + ' (BQ ML tier factor) = $' + fmtMoney(arimaPrice) + ' / TiB');
+          : ' (from AUTO_ARIMA_MAX_ORDER = ' + (orderIdx + 1) + ')'));
+    steps.push(n++ + '. total processed: '
+      + inputTiB.toExponential(4) + ' TiB × ' + ML_TIER_FACTOR + ' × ' + finalCandidates
+      + ' = ' + totalProcessedTiB.toExponential(4) + ' TiB');
+    steps.push(n++ + '. standard BQ unit price: $' + stdPrice + ' / TiB');
     steps.push(n++ + '. cost (USD): '
-      + effectiveTiB.toExponential(4) + ' TiB × $' + fmtMoney(arimaPrice)
+      + totalProcessedTiB.toExponential(4) + ' TiB × $' + stdPrice
       + ' = $' + fmtMoney(costUSD));
     if (hasConv) {
       steps.push(n++ + '. currency conversion: $' + fmtMoney(costUSD)
@@ -487,11 +473,6 @@ This calculator estimates the cost of **BigQuery ML ARIMA_PLUS / ARIMA_PLUS_XREG
         overrideInputRow.style.display = this.checked ? '' : 'none';
       });
     }
-    // Live update ARIMA derived price
-    var stdPriceEl = document.getElementById('std-price');
-    if (stdPriceEl) {
-      stdPriceEl.addEventListener('input', updateDerivedPrice);
-    }
   }
 
   if (document.readyState === 'loading') {
@@ -509,9 +490,8 @@ This calculator estimates the cost of **BigQuery ML ARIMA_PLUS / ARIMA_PLUS_XREG
 | Parameter | Value |
 |-----------|-------|
 | Region (default) | europe-west2 (London) |
-| Standard BQ ML price | $7.8125 / TiB |
-| ARIMA_PLUS tier factor | × 50 |
-| ARIMA_PLUS effective price | $390.625 / TiB |
+| Standard BQ unit price | $7.8125 / TiB |
+| ARIMA_PLUS tier factor | × 50 (applied to volume) |
 | Billing unit | Tebibyte (TiB = 2⁴⁰ bytes) |
 
 ### Candidate models by AUTO_ARIMA_MAX_ORDER
